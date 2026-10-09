@@ -1,6 +1,15 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env([...]
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>October Bingo</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;800&display=swap">
 <style>
+html, body { margin: 0; padding: 0; background: #d6165a; }
+img { max-width: 100%; }
+[hidden] { display: none !important; }
+
 /* Layout: the original bingo image is the board; 16 invisible tap zones sit on top and show a check when done. */
 :root {
   --bg: #d6165a;
@@ -14,13 +23,15 @@
   color-scheme: light;
 }
 html, body { background: var(--bg); }
-body { color: var(--ink); font-family: var(--font-ui); padding-inline: 16px; padding-block: 12px 28px; }
-main { max-width: 540px; margin-inline: auto; display: flex; flex-direction: column; gap: 14px; }
-.board { position: relative; width: 100%; aspect-ratio: 1 / 1; border-radius: 18px; overflow: hidden; box-shadow: 0 10px 30px rgba(90,0,35,.35); }
-.board img { display: block; width: 100%; height: 100%; user-select: none; -webkit-user-drag: none; }
+html, body { height: 100%; }
+body { color: var(--ink); font-family: var(--font-ui); padding: 0; overflow-x: hidden; }
+main { height: 100%; width: 100%; display: flex; flex-direction: column; justify-content: center; gap: 14px; }
+.board { position: relative; width: 100%; max-width: calc(100vh - 110px); aspect-ratio: 1 / 1; margin-inline: auto; flex: none; }
+.bar, .banner { margin-inline: 16px; }
+.board img { display: block; width: 100%; height: 100%; object-fit: fill; user-select: none; -webkit-user-drag: none; }
 .tile { position: absolute; padding: 0; border: 0; background: transparent; border-radius: 12px; cursor: pointer; -webkit-tap-highlight-color: transparent; transition: background .18s ease; }
 .tile:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
-.tile svg { position: absolute; inset: 14%; width: 72%; height: 72%; opacity: 0; transform: scale(.4) rotate(-12deg); transition: opacity .18s ease, transform .28s cubic-bezier(.3,1.6,.5,1); overflow:[...]
+.tile svg { position: absolute; inset: 14%; width: 72%; height: 72%; opacity: 0; transform: scale(.4) rotate(-12deg); transition: opacity .18s ease, transform .28s cubic-bezier(.3,1.6,.5,1); overflow: visible; }
 .tile svg path { fill: none; stroke: var(--check); stroke-width: 15; stroke-linecap: round; stroke-linejoin: round; paint-order: stroke; filter: drop-shadow(0 0 0 var(--check-halo)); }
 .tile[aria-pressed="true"] { background: var(--tile-done); }
 .tile[aria-pressed="true"] svg { opacity: 1; transform: scale(1) rotate(0); }
@@ -30,17 +41,18 @@ main { max-width: 540px; margin-inline: auto; display: flex; flex-direction: col
 .score b { font-size: 1.6rem; line-height: 1; font-variant-numeric: tabular-nums; }
 .score span { font-size: .85rem; color: var(--ink-soft); letter-spacing: .04em; text-transform: uppercase; }
 .actions { display: flex; gap: 8px; align-items: center; }
-button.ghost { font: inherit; font-weight: 600; font-size: .9rem; color: var(--ink); background: var(--btn); border: 1.5px solid rgba(255,255,255,.55); border-radius: 999px; padding: 8px 16px; cursor:[...]
+button.ghost { font: inherit; font-weight: 600; font-size: .9rem; color: var(--ink); background: var(--btn); border: 1.5px solid rgba(255,255,255,.55); border-radius: 999px; padding: 8px 16px; cursor: pointer; }
 button.ghost:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
 .confirm { font-size: .9rem; display: flex; gap: 8px; align-items: center; }
 .banner { text-align: center; font-weight: 800; font-size: 1.15rem; background: #fff; color: #b0124a; border-radius: 12px; padding: 8px 12px; }
 @media (prefers-reduced-motion: reduce) { .tile, .tile svg { transition: none; } }
 </style>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;800&display=swap">
+</head>
+<body>
 <main>
   <div class="board" id="board">
-    <img alt="October Bingo board" src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAMCAgICAgMCAgIDAwMDBAYEBAQEBAgGBgUGCQgKCgkICQkKDA8MCgsOCwkJDRENDg8QEBEQCgwSExIQEw8QEBD/2wBDAQMDAwQDBAgEB[...]
-    <button class="tile" id="t0" data-i="0" aria-pressed="false" aria-label="Go on a coffee date" style="left:5.004%;top:18.151%;width:21.968%;height:18.405%"><svg viewBox="0 0 100 100" aria-hidden="t[...]
+    <img alt="October Bingo board" src="board.jpg">
+    <button class="tile" id="t0" data-i="0" aria-pressed="false" aria-label="Go on a coffee date" style="left:5.004%;top:18.151%;width:21.968%;height:18.405%"><svg viewBox="0 0 100 100" aria-hidden="true"><path d="M20 54 L42 76 L82 26" /></svg></button><button class="tile" id="t1" data-i="1" aria-pressed="false" aria-label="Watch a movie" style="left:27.905%;top:18.151%;width:21.713%;height:18.405%"><svg viewBox="0 0 100 100" aria-hidden="true"><path d="M20 54 L42 76 L82 26" /></svg></button><button class="tile" id="t2" data-i="2" aria-pressed="false" aria-label="Go ice skating" style="left:50.382%;top:18.151%;width:21.713%;height:18.405%"><svg viewBox="0 0 100 100" aria-hidden="true"><path d="M20 54 L42 76 L82 26" /></svg></button><button class="tile" id="t3" data-i="3" aria-pressed="false" aria-label="Read a book" style="left:72.943%;top:18.151%;width:22.053%;height:18.405%"><svg viewBox="0 0 100 100" aria-hidden="true"><path d="M20 54 L42 76 L82 26" /></svg></button><button class="tile" id="t4" data-i="4" aria-pressed="false" aria-label="Buy myself flowers" style="left:5.004%;top:37.320%;width:21.968%;height:18.660%"><svg viewBox="0 0 100 100" aria-hidden="true"><path d="M20 54 L42 76 L82 26" /></svg></button><button class="tile" id="t5" data-i="5" aria-pressed="false" aria-label="Cook a special meal" style="left:27.905%;top:37.320%;width:21.713%;height:18.660%"><svg viewBox="0 0 100 100" aria-hidden="true"><path d="M20 54 L42 76 L82 26" /></svg></button><button class="tile" id="t6" data-i="6" aria-pressed="false" aria-label="Try a new activity" style="left:50.382%;top:37.320%;width:21.713%;height:18.660%"><svg viewBox="0 0 100 100" aria-hidden="true"><path d="M20 54 L42 76 L82 26" /></svg></button><button class="tile" id="t7" data-i="7" aria-pressed="false" aria-label="Meet an old friend" style="left:72.943%;top:37.320%;width:22.053%;height:18.660%"><svg viewBox="0 0 100 100" aria-hidden="true"><path d="M20 54 L42 76 L82 26" /></svg></button><button class="tile" id="t8" data-i="8" aria-pressed="false" aria-label="Attend 4:30 AM Mangala Aarti at ISKCON" style="left:5.004%;top:56.743%;width:21.968%;height:18.490%"><svg viewBox="0 0 100 100" aria-hidden="true"><path d="M20 54 L42 76 L82 26" /></svg></button><button class="tile" id="t9" data-i="9" aria-pressed="false" aria-label="Make and sell NFC fridge magnets" style="left:27.905%;top:56.743%;width:21.713%;height:18.490%"><svg viewBox="0 0 100 100" aria-hidden="true"><path d="M20 54 L42 76 L82 26" /></svg></button><button class="tile" id="t10" data-i="10" aria-pressed="false" aria-label="Start UGC" style="left:50.382%;top:56.743%;width:21.713%;height:18.490%"><svg viewBox="0 0 100 100" aria-hidden="true"><path d="M20 54 L42 76 L82 26" /></svg></button><button class="tile" id="t11" data-i="11" aria-pressed="false" aria-label="Try a new dessert place" style="left:72.943%;top:56.743%;width:22.053%;height:18.490%"><svg viewBox="0 0 100 100" aria-hidden="true"><path d="M20 54 L42 76 L82 26" /></svg></button><button class="tile" id="t12" data-i="12" aria-pressed="false" aria-label="Visit a new city" style="left:5.004%;top:75.997%;width:21.968%;height:19.508%"><svg viewBox="0 0 100 100" aria-hidden="true"><path d="M20 54 L42 76 L82 26" /></svg></button><button class="tile" id="t13" data-i="13" aria-pressed="false" aria-label="Write and post a letter to someone" style="left:27.905%;top:75.997%;width:21.713%;height:19.508%"><svg viewBox="0 0 100 100" aria-hidden="true"><path d="M20 54 L42 76 L82 26" /></svg></button><button class="tile" id="t14" data-i="14" aria-pressed="false" aria-label="Try a random restaurant" style="left:50.382%;top:75.997%;width:21.713%;height:19.508%"><svg viewBox="0 0 100 100" aria-hidden="true"><path d="M20 54 L42 76 L82 26" /></svg></button><button class="tile" id="t15" data-i="15" aria-pressed="false" aria-label="Get my driving license" style="left:72.943%;top:75.997%;width:22.053%;height:19.508%"><svg viewBox="0 0 100 100" aria-hidden="true"><path d="M20 54 L42 76 L82 26" /></svg></button>
   </div>
   <div class="banner" id="banner" hidden>BINGO!</div>
   <div class="bar">
@@ -83,5 +95,5 @@ button.ghost:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
   render();
 })();
 </script>
-
-</body></html>
+</body>
+</html>
